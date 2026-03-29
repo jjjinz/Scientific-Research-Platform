@@ -1,6 +1,6 @@
-:root {
-  --bg: #f3f5f7;
-  --bg-deep: #e9eef5;
+﻿:root {
+  --bg: #f4f5f7;
+  --bg-deep: #e7ecf2;
   --surface: rgba(255, 255, 255, 0.74);
   --surface-strong: rgba(255, 255, 255, 0.92);
   --text: #1d1d1f;
@@ -130,7 +130,9 @@ a {
 .record-summary,
 .record-meta,
 .status-strip p,
-.highlight-card p {
+.highlight-card p,
+.setup-grid p,
+.auth-card p {
   color: var(--muted);
   line-height: 1.75;
 }
@@ -143,7 +145,8 @@ a {
 
 .hero-actions,
 .form-actions,
-.record-actions {
+.record-actions,
+.auth-actions {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
@@ -171,6 +174,12 @@ a {
   transform: translateY(-1px);
 }
 
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .button.primary {
   background: var(--text);
   color: #fff;
@@ -192,8 +201,14 @@ a {
   border-radius: var(--radius-xl);
 }
 
-.hero-panel {
+.hero-panel,
+.setup-card,
+.workspace-card,
+.auth-card {
   padding: 28px;
+}
+
+.hero-panel {
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.66)),
     linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(255, 255, 255, 0));
@@ -232,7 +247,8 @@ a {
 .record-type,
 .record-tags span,
 .file-list a,
-.empty-state p {
+.empty-state p,
+.ai-summary-label {
   margin: 0;
 }
 
@@ -254,7 +270,8 @@ a {
   box-shadow: 0 0 0 6px rgba(34, 197, 94, 0.14);
 }
 
-.intro-grid {
+.intro-grid,
+.setup-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
@@ -266,14 +283,19 @@ a {
 
 .highlight-card h3,
 .card-header h3,
-.record-title {
+.record-title,
+.auth-card h3,
+.setup-grid h3 {
   margin: 0;
   letter-spacing: -0.04em;
   line-height: 1.18;
 }
 
-.highlight-card h3 {
-  font-size: 1.45rem;
+.setup-grid article {
+  padding: 22px;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.56);
+  border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .workspace-shell {
@@ -284,6 +306,22 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.auth-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.disabled-card {
+  opacity: 0.78;
+}
+
 .section-heading {
   max-width: 780px;
 }
@@ -292,9 +330,16 @@ a {
   font-size: clamp(2.4rem, 5vw, 4.4rem);
 }
 
+.section-heading.compact h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
 .workspace-card {
   margin-top: 24px;
-  padding: 28px;
+}
+
+.featured-grid {
+  margin-top: 22px;
 }
 
 .card-header {
@@ -454,6 +499,30 @@ textarea {
   font-size: 0.8rem;
 }
 
+.ai-summary-block {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(10, 132, 255, 0.07);
+}
+
+.ai-summary-label {
+  margin-bottom: 8px;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ai-summary-text,
+.ai-ocr-text {
+  margin: 0;
+  color: var(--text);
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
 .record-actions {
   margin-top: 18px;
 }
@@ -477,9 +546,11 @@ textarea {
 @media (max-width: 1080px) {
   .hero,
   .intro-grid,
+  .setup-grid,
   .records-grid,
   .two-col,
-  .three-col {
+  .three-col,
+  .auth-card {
     grid-template-columns: 1fr;
   }
 
@@ -513,6 +584,8 @@ textarea {
 
   .workspace-shell,
   .workspace-card,
+  .setup-card,
+  .auth-card,
   .editor-form,
   .hero-panel {
     padding: 20px;
@@ -526,3 +599,4 @@ textarea {
     grid-template-columns: 1fr;
   }
 }
+

@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>科研工作台 | Research Studio</title>
+    <title>科研工作台 | Cloud Research Studio</title>
     <meta
       name="description"
-      content="一个支持上传文献、记录科研想法、保存仿真结果与实验结果的个人科研工作台。"
+      content="基于腾讯云 CloudBase 和通义千问的个人私有科研工作台，支持云端同步、文件上传、实验总结和图片 OCR。"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -15,127 +15,133 @@
       <header class="site-header">
         <a class="brand" href="#top">Research Studio</a>
         <nav class="site-nav">
-          <a href="#library">文献库</a>
-          <a href="#ideas">想法库</a>
-          <a href="#simulations">仿真结果</a>
-          <a href="#experiments">实验结果</a>
+          <a href="#ideas">想法</a>
+          <a href="#simulations">仿真</a>
+          <a href="#experiments">实验</a>
+          <a href="#library">文献</a>
         </nav>
       </header>
 
       <main id="top">
         <section class="hero section">
           <div class="hero-copy">
-            <p class="eyebrow">Personal Research OS</p>
-            <h1>把科研想法、文献与结果集中在一个网页里。</h1>
+            <p class="eyebrow">Tencent CloudBase + Qwen</p>
+            <h1>一个能跨设备同步的个人私有科研工作台。</h1>
             <p class="hero-text">
-              这个页面现在不只是展示页，而是一个可长期使用的科研工作台。你可以上传文献，记录灵感，整理仿真结果和实验结果，并在浏览器中手动编辑与保存。
+              这一版按“腾讯云 CloudBase + 通义千问”设计。你可以登录个人私有空间，在云端保存科研想法、文献、仿真结果和实验结果，并对文本和实验图片做总结与 OCR。
             </p>
             <div class="hero-actions">
               <a class="button primary" href="#workspace">进入工作区</a>
-              <a class="button secondary" href="#guide">查看使用说明</a>
+              <a class="button secondary" href="#setup">查看配置说明</a>
             </div>
           </div>
 
           <aside class="hero-panel glass-card">
-            <p class="panel-label">当前状态</p>
-            <h2>一个可以离线保存、在线部署的个人科研主页。</h2>
+            <p class="panel-label">运行状态</p>
+            <h2 id="storageModeLabel">正在检测当前连接模式</h2>
             <div class="hero-stats">
               <article>
-                <span id="docCount">0</span>
-                <p>文献条目</p>
-              </article>
-              <article>
                 <span id="ideaCount">0</span>
-                <p>想法记录</p>
+                <p>想法</p>
               </article>
               <article>
                 <span id="simulationCount">0</span>
-                <p>仿真结果</p>
+                <p>仿真</p>
               </article>
               <article>
                 <span id="experimentCount">0</span>
-                <p>实验结果</p>
+                <p>实验</p>
+              </article>
+              <article>
+                <span id="docCount">0</span>
+                <p>文献</p>
               </article>
             </div>
             <div class="status-strip">
               <span class="status-dot"></span>
-              <p id="saveStatus">数据会保存在当前浏览器中。</p>
+              <p id="saveStatus">应用启动中...</p>
             </div>
           </aside>
         </section>
 
-        <section id="guide" class="section intro-grid">
+        <section class="section intro-grid">
           <article class="highlight-card">
-            <p>文献管理</p>
-            <h3>上传 PDF 或补充阅读笔记，形成自己的文献档案。</h3>
+            <p>个人私有版</p>
+            <h3>通过 CloudBase 自定义登录票据控制访问，只让你自己进入后台。</h3>
           </article>
           <article class="highlight-card">
-            <p>想法沉淀</p>
-            <h3>把问题、假设、方法路线和待验证点持续记下来。</h3>
+            <p>云端同步</p>
+            <h3>文档、图片与实验附件上传到腾讯云对象存储，跨设备保持同一份数据。</h3>
           </article>
           <article class="highlight-card">
-            <p>结果归档</p>
-            <h3>分别管理仿真结果与实验结果，支持后续编辑与补充。</h3>
+            <p>AI 能力</p>
+            <h3>通义千问负责总结与问答，`qwen-vl-ocr` 用于实验图片和扫描图识别。</h3>
           </article>
         </section>
 
+        <section id="setup" class="section setup-card glass-card">
+          <div class="section-heading compact">
+            <p class="eyebrow">Setup</p>
+            <h2>当前接入方式</h2>
+            <p>
+              页面默认支持本地模式回退。配置好 `config.js`、CloudBase 环境和云函数后，会自动切换到云端私有版。
+            </p>
+          </div>
+          <div class="setup-grid">
+            <article>
+              <h3>1. CloudBase</h3>
+              <p>创建环境、集合和存储桶，并开启 HTTP 访问服务用于登录票据。</p>
+            </article>
+            <article>
+              <h3>2. 通义千问</h3>
+              <p>在阿里云百炼创建 API Key，配置到云函数环境变量，不直接暴露在前端。</p>
+            </article>
+            <article>
+              <h3>3. 前端配置</h3>
+              <p>复制 `config.example.js` 为 `config.js`，填入你的环境 ID、区域和函数入口地址。</p>
+            </article>
+          </div>
+        </section>
+
         <section id="workspace" class="section workspace-shell">
+          <div class="auth-card glass-card" id="authCard">
+            <div>
+              <p class="card-kicker">Private Access</p>
+              <h3>私有登录</h3>
+              <p class="card-note">
+                CloudBase 配好后，这里会使用单管理员密码换取登录票据。未配置时会自动回退到本地模式。
+              </p>
+            </div>
+            <form id="loginForm" class="auth-form">
+              <label>
+                <span>管理员密码</span>
+                <input name="password" type="password" placeholder="输入你在云函数环境变量中设置的密码" />
+              </label>
+              <div class="auth-actions">
+                <button type="submit" class="button primary">登录云端</button>
+                <button type="button" class="button secondary" id="logoutButton" hidden>退出登录</button>
+              </div>
+            </form>
+          </div>
+
           <div class="section-heading">
             <p class="eyebrow">Workspace</p>
-            <h2>科研工作区</h2>
+            <h2>科研记录与编辑区</h2>
             <p>
-              所有内容默认保存在当前浏览器的本地数据库中。只要不清理浏览器站点数据，记录和文件会持续保留。
+              想法优先展示，实验和仿真结果支持 AI 总结，文献区支持阅读笔记与图片 OCR。接入云端后，所有内容都将以你的私有账号身份读写。
             </p>
           </div>
 
-          <div id="library" class="workspace-card glass-card">
-            <div class="card-header">
-              <div>
-                <p class="card-kicker">Library</p>
-                <h3>文献库</h3>
-              </div>
-              <p class="card-note">支持上传 PDF、Word、压缩包或补充阅读笔记</p>
-            </div>
-            <form id="documentForm" class="editor-form">
-              <input type="hidden" name="id" />
-              <div class="form-grid two-col">
-                <label>
-                  <span>标题</span>
-                  <input name="title" type="text" placeholder="例如：Attention Is All You Need" required />
-                </label>
-                <label>
-                  <span>作者 / 来源</span>
-                  <input name="authors" type="text" placeholder="作者、期刊、会议或链接" />
-                </label>
-              </div>
-              <label>
-                <span>摘要或阅读笔记</span>
-                <textarea
-                  name="notes"
-                  rows="4"
-                  placeholder="记录关键结论、与你研究的关系、后续可复现的点"
-                ></textarea>
-              </label>
-              <label>
-                <span>上传文献文件</span>
-                <input name="files" type="file" multiple />
-              </label>
-              <div class="form-actions">
-                <button type="submit" class="button primary">保存文献</button>
-                <button type="button" class="button secondary" data-action="cancel">清空</button>
-              </div>
-            </form>
-            <div id="documentList" class="records-grid"></div>
-          </div>
-
-          <div id="ideas" class="workspace-card glass-card">
+          <section id="ideas" class="workspace-card glass-card">
             <div class="card-header">
               <div>
                 <p class="card-kicker">Ideas</p>
-                <h3>想法库</h3>
+                <h3>想法总览</h3>
               </div>
-              <p class="card-note">适合记录问题定义、假设、方法路线和下一步计划</p>
+              <p class="card-note">持续保存问题定义、方法假设和下一步研究计划。</p>
             </div>
+            <div id="ideaShowcaseList" class="records-grid featured-grid"></div>
+            <div id="ideaList" class="records-grid"></div>
             <form id="ideaForm" class="editor-form">
               <input type="hidden" name="id" />
               <div class="form-grid two-col">
@@ -171,17 +177,17 @@
                 <button type="button" class="button secondary" data-action="cancel">清空</button>
               </div>
             </form>
-            <div id="ideaList" class="records-grid"></div>
-          </div>
+          </section>
 
-          <div id="simulations" class="workspace-card glass-card">
+          <section id="simulations" class="workspace-card glass-card">
             <div class="card-header">
               <div>
                 <p class="card-kicker">Simulation</p>
                 <h3>仿真结果</h3>
               </div>
-              <p class="card-note">上传图、数据、日志或压缩包，并记录结论</p>
+              <p class="card-note">上传图、数据和日志，并生成结构化总结。</p>
             </div>
+            <div id="simulationList" class="records-grid"></div>
             <form id="simulationForm" class="editor-form">
               <input type="hidden" name="id" />
               <div class="form-grid three-col">
@@ -216,17 +222,17 @@
                 <button type="button" class="button secondary" data-action="cancel">清空</button>
               </div>
             </form>
-            <div id="simulationList" class="records-grid"></div>
-          </div>
+          </section>
 
-          <div id="experiments" class="workspace-card glass-card">
+          <section id="experiments" class="workspace-card glass-card">
             <div class="card-header">
               <div>
                 <p class="card-kicker">Experiment</p>
                 <h3>实验结果</h3>
               </div>
-              <p class="card-note">适合记录实验条件、核心结论和附件材料</p>
+              <p class="card-note">支持附件上传、AI 总结和图片 OCR 识别。</p>
             </div>
+            <div id="experimentList" class="records-grid"></div>
             <form id="experimentForm" class="editor-form">
               <input type="hidden" name="id" />
               <div class="form-grid three-col">
@@ -253,7 +259,7 @@
                 ></textarea>
               </label>
               <label>
-                <span>上传实验文件</span>
+                <span>上传实验文件或图片</span>
                 <input name="files" type="file" multiple />
               </label>
               <div class="form-actions">
@@ -261,8 +267,47 @@
                 <button type="button" class="button secondary" data-action="cancel">清空</button>
               </div>
             </form>
-            <div id="experimentList" class="records-grid"></div>
-          </div>
+          </section>
+
+          <section id="library" class="workspace-card glass-card">
+            <div class="card-header">
+              <div>
+                <p class="card-kicker">Library</p>
+                <h3>文献库</h3>
+              </div>
+              <p class="card-note">保存论文、扫描页、阅读笔记，并对图片做 OCR 抽取。</p>
+            </div>
+            <div id="documentList" class="records-grid"></div>
+            <form id="documentForm" class="editor-form">
+              <input type="hidden" name="id" />
+              <div class="form-grid two-col">
+                <label>
+                  <span>标题</span>
+                  <input name="title" type="text" placeholder="例如：Attention Is All You Need" required />
+                </label>
+                <label>
+                  <span>作者 / 来源</span>
+                  <input name="authors" type="text" placeholder="作者、期刊、会议或链接" />
+                </label>
+              </div>
+              <label>
+                <span>摘要或阅读笔记</span>
+                <textarea
+                  name="notes"
+                  rows="4"
+                  placeholder="记录关键结论、与你研究的关系、后续可复现的点"
+                ></textarea>
+              </label>
+              <label>
+                <span>上传论文文件或扫描图片</span>
+                <input name="files" type="file" multiple />
+              </label>
+              <div class="form-actions">
+                <button type="submit" class="button primary">保存文献记录</button>
+                <button type="button" class="button secondary" data-action="cancel">清空</button>
+              </div>
+            </form>
+          </section>
         </section>
       </main>
     </div>
@@ -279,13 +324,26 @@
         <p class="record-summary"></p>
         <div class="record-tags"></div>
         <ul class="file-list"></ul>
+        <div class="ai-summary-block" hidden>
+          <p class="ai-summary-label">AI 总结</p>
+          <p class="ai-summary-text"></p>
+        </div>
+        <div class="ai-summary-block ai-ocr-block" hidden>
+          <p class="ai-summary-label">图片 OCR</p>
+          <p class="ai-ocr-text"></p>
+        </div>
         <div class="record-actions">
           <button type="button" class="chip-button" data-action="edit">编辑</button>
+          <button type="button" class="chip-button" data-action="summarize">AI 总结</button>
+          <button type="button" class="chip-button" data-action="ocr">图片 OCR</button>
           <button type="button" class="chip-button danger" data-action="delete">删除</button>
         </div>
       </article>
     </template>
 
+    <script src="config.js"></script>
+    <script src="https://static.cloudbase.net/cloudbase-js-sdk/2.21.6/cloudbase.full.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
+
