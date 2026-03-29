@@ -1,4 +1,4 @@
-﻿const DB_NAME = "research-studio-db";
+const DB_NAME = "research-studio-db";
 const DB_VERSION = 1;
 const STORE_NAMES = ["ideas", "simulations", "experiments", "documents"];
 
@@ -255,7 +255,14 @@ function createCloudBaseBackend(config) {
       if (!response.ok || !payload.ticket) {
         throw new Error(payload.message || "登录失败，请检查管理员密码。");
       }
-      await auth.customAuthProvider().signIn(payload.ticket);
+      if (typeof auth.setCustomSignFunc === "function" && typeof auth.signInWithCustomTicket === "function") {
+        await auth.setCustomSignFunc(() => Promise.resolve(payload.ticket));
+        await auth.signInWithCustomTicket();
+      } else if (typeof auth.customAuthProvider === "function") {
+        await auth.customAuthProvider().signIn(payload.ticket);
+      } else {
+        throw new Error("当前 CloudBase Web SDK 不支持自定义 Ticket 登录，请检查前端 SDK 版本。");
+      }
       this.isAuthenticated = true;
       return true;
     },
@@ -810,4 +817,3 @@ async function collectLocalFiles(fileInput, existingFiles = []) {
     objectUrl: URL.createObjectURL(file),
   }));
 }
-
